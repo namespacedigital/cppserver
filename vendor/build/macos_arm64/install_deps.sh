@@ -16,7 +16,7 @@ mkdir -p $BUILD_DIR
 mkdir -p $INSTALL_DIR
 mkdir -p $CACHE_DIR
 
-source ../../VERSION
+source ../../../VERSION
 
 if [ -z "$JOBS" ]; then
   JOBS=`sysctl -n hw.logicalcpu_max`

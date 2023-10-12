@@ -81,12 +81,12 @@ pushd ..
   CPPSERVER_COMMIT_SHORT="`cat $CPPSERVER_COMMIT | cut -b 1-8`"
 popd
 
-source ../VERSION
+source ../../VERSION
 
 case "$PACKAGE" in
   macos_arm64 )
     if [ $FLAG_CLEAN -eq 1 ]; then
-      rm -rf ../_build/$PACKAGE
+      rm -rf ../../_build/$PACKAGE
       rm -rf $PACKAGE/_source
       rm -rf $PACKAGE/_build
       rm -rf $PACKAGE/_install
@@ -94,8 +94,6 @@ case "$PACKAGE" in
     fi
 
     ./$PACKAGE/install_deps.sh
-
-    source ./$PACKAGE/_install/webrtc/VERSIONS
 
     if [ -z "$JOBS" ]; then
       JOBS=`sysctl -n hw.logicalcpu_max`
@@ -110,8 +108,8 @@ case "$PACKAGE" in
       BUILD_TYPE=Release
     fi
 
-    mkdir -p ../_build/$PACKAGE
-    pushd ../_build/$PACKAGE
+    mkdir -p ../../_build/$PACKAGE
+    pushd ../../_build/$PACKAGE
       cmake \
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
         -DCPPSERVER_PACKAGE_NAME="$PACKAGE" \
@@ -193,7 +191,7 @@ case "$PACKAGE" in
 
     rm -r $PACKAGE/script
 
-    ../script/docker_run.sh `pwd` `pwd`/.. $DOCKER_MOUNT_TYPE $PACKAGE cppserver/$PACKAGE:m$WEBRTC_BUILD_VERSION $CPPSERVER_COMMIT
+    ../script/docker_run.sh `pwd` `pwd`/../.. $DOCKER_MOUNT_TYPE $PACKAGE cppserver/$PACKAGE:m$WEBRTC_BUILD_VERSION $CPPSERVER_COMMIT
 
     if [ $FLAG_PACKAGE -eq 1 ]; then
       pushd ..

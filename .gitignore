@@ -1,0 +1,9 @@
+_build/
+_cache/
+vendor/_cache/
+vendor/build/macos_arm64/_build/
+vendor/build/macos_arm64/_install/
+vendor/build/macos_arm64/_source/
+vendor/build/raspberry-pi-os_armv7/_build/
+vendor/build/raspberry-pi-os_armv7/_install/
+vendor/build/raspberry-pi-os_armv7/_source/

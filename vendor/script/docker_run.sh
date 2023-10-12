@@ -86,7 +86,7 @@ if [ "$MOUNT_TYPE" = "mount" ]; then
     $DOCKER_PLATFORM \
     -it \
     --rm \
-    -v "$WORK_DIR/..:/root/cppserver" \
+    -v "$WORK_DIR/../..:/root/cppserver" \
     "$DOCKER_IMAGE" \
     /bin/bash -c "
       set -ex
