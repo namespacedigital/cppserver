@@ -1,12 +1,17 @@
 # Set a target name
-set(TARGET malloy-example-server-basic)
+set(TARGET testlib)
 
 # Create the executable
 add_executable(${TARGET})
 
 # Setup example
-include(../example.cmake)
-malloy_example_setup(${TARGET})
+target_link_libraries(
+        ${TARGET}
+        PRIVATE
+           server
+    )
+
+set_target_properties(${TARGET} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CPPSERVER_BINARY_DIR})
 
 # Add source files
 target_sources(

@@ -67,3 +67,5 @@ endif()
 
 # Add the source code library
 add_subdirectory(src/namespace.digital)
+
+add_subdirectory(example)

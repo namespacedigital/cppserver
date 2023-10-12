@@ -110,7 +110,7 @@ case "$PACKAGE" in
 
     mkdir -p ../../_build/$PACKAGE
     pushd ../../_build/$PACKAGE
-      cmake \
+      cmake -G Xcode\
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
         -DCPPSERVER_PACKAGE_NAME="$PACKAGE" \
         -DCPPSERVER_VERSION="$CPPSERVER_VERSION" \

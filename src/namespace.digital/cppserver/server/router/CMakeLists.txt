@@ -3,11 +3,12 @@ target_sources(
     PUBLIC
 		FILE_SET
 			HEADERS
-			BASE_DIRS ${MALLOY_SERVER_BASE_DIR}
+			BASE_DIRS ${CPPSERVER_BASE_DIR}
 			FILES
 				router.hpp
-				router.cpp
+			
 
 	PRIVATE
 		router_config.cpp
+		router.cpp
 )
