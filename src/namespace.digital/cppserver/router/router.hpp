@@ -3,7 +3,7 @@
 #include <iostream>
 
 namespace namespacedigital {
-  namespace server {
+  namespace cppserver {
     namespace router {
       class Router {
       public:

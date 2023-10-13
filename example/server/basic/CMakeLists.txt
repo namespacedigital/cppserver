@@ -5,11 +5,7 @@ set(TARGET testlib)
 add_executable(${TARGET})
 
 # Setup example
-target_link_libraries(
-        ${TARGET}
-        PRIVATE
-           server
-    )
+target_link_libraries(${TARGET} PRIVATE namespace.digital-cppserver)
 
 set_target_properties(${TARGET} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CPPSERVER_BINARY_DIR})
 
