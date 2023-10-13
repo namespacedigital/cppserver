@@ -7,6 +7,8 @@ set(TARGET "namespace.digital-cppserver")
 # Create library
 add_library(${TARGET} STATIC)
 
+find_package(Boost REQUIRED COMPONENTS filesystem json)
+
 target_link_libraries(${TARGET}
 PUBLIC
   Boost::filesystem
@@ -37,49 +39,6 @@ if (USE_LIBCXX)
   target_link_directories(${TARGET}  PRIVATE ${SYSROOT}/usr/lib/${ARCH_NAME})
 endif()
 endif()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# set_target_properties(
-#   ${TARGET} 
-#   PROPERTIES
-#       CXX_STANDARD 20 
-#       C_STANDARD 99
-#       VERSION ${PROJECT_VERSION}
-#       RUNTIME_OUTPUT_DIRECTORY ${CPPSERVER_BINARY_DIR} 
-#       LIBRARY_OUTPUT_DIRECTORY ${CPPSERVER_BINARY_DIR}
-# )
-
 
 # Cppserver lib
 add_subdirectory(namespace.digital)

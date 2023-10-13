@@ -7,3 +7,5 @@ vendor/build/macos_arm64/_source/
 vendor/build/raspberry-pi-os_armv7/_build/
 vendor/build/raspberry-pi-os_armv7/_install/
 vendor/build/raspberry-pi-os_armv7/_source/
+
+.DS_Store

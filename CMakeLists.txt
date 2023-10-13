@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.23)
 cmake_policy(SET CMP0054 NEW)
 # MSVC runtime library flags are selected by an abstraction.
 cmake_policy(SET CMP0091 NEW)
+
 # Options
 option(CPPSERVER_BUILD_EXAMPLES "Whether to build examples"       ON)
 option(CPPSERVER_BUILD_TESTS    "Whether to build tests"          ON)
@@ -12,7 +13,7 @@ option(CPPSERVER_DEPENDENCY_SPDLOG_DOWNLOAD "Whether to automatically fetch spdl
 option(CPPSERVER_DEPENDENCY_FMT_DOWNLOAD "Whether to automatically fetch fmt" ON)
 
 # Settings
-set(CPPSERVER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bin) # Needed for later
+set(CPPSERVER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bin) 
 
 # Parse and set parameters settings
 set(CPPSERVER_PACKAGE_NAME "" CACHE STRING "Package name to automate build settings")
@@ -33,16 +34,16 @@ if (CPPSERVER_FEATURE_TLS)
 endif()
 
 
-if(STREAM_PACKAGE_NAME STREQUAL "macos_arm64")
+if(CPPSERVER_PACKAGE_NAME STREQUAL "macos_arm64")
   message(CHECK_START "build for macos_arm64")  
-  set(_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/platform/macos_arm64/_install)
-  set(_BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/platform/macos_arm64/_build)
+  set(_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/build/macos_arm64/_install)
+  set(_BUILD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/build/macos_arm64/_build)
   set(_THIRD_PARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party)
   set(TARGET_OS "macos")
   set(TARGET_ARCH "arm64")
   set(BOOST_ROOT_DIR ${_INSTALL_DIR}/boost)
 
-elseif(MOMO_PACKAGE_NAME STREQUAL "raspberry-pi-os_armv7")
+elseif(CPPSERVER_PACKAGE_NAME STREQUAL "raspberry-pi-os_armv7")
 
   set(TARGET_OS "linux")
   set(TARGET_OS_LINUX "raspberry-pi-os")
@@ -131,39 +132,6 @@ else()
   set(Boost_USE_STATIC_RUNTIME OFF)
 endif()
 
-# find_package(Boost REQUIRED COMPONENTS filesystem json)
-
-# add_executable(namespace.digital)
-
-# target_include_directories(namespace.digital PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-
-# target_sources(namespace.digital
-#   PRIVATE
-#   main.cpp
-# )
-
-# target_include_directories(namespace.digital PRIVATE src)
-
-# set_target_properties(namespace.digital PROPERTIES CXX_STANDARD 20 C_STANDARD 99)
-
-# target_link_libraries(namespace.digital
-#   PUBLIC
-#     Boost::filesystem
-#     Boost::json
-# )
-
-
-# if (TARGET_OS STREQUAL "linux")
-#   find_package(Threads REQUIRED)
-#   target_link_libraries(namespace.digital
-#   PRIVATE
-#     Threads::Threads
-# )
-# endif()
-
-# if (TARGET_ARCH STREQUAL "arm")
-#   if (USE_LIBCXX)
-#     target_include_directories(namespace.digital PRIVATE ${SYSROOT}/usr/include/${ARCH_NAME})
-#     target_link_directories(namespace.digital PRIVATE ${SYSROOT}/usr/lib/${ARCH_NAME})
-#   endif()
-# endif()
+# Add the source code library
+add_subdirectory(src)
+add_subdirectory(example)
