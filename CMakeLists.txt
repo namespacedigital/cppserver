@@ -121,7 +121,13 @@ if (TARGET_OS STREQUAL "macos")
   set(CMAKE_CXX_COMPILER_TARGET ${ARCH_NAME})
 endif()
 
+#project
 project(namespace.digital VERSION ${CPPSERVER_VERSION} LANGUAGES C CXX HOMEPAGE_URL "https://github.com/namespacedigital/cppserver")
+
+# C++
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSION OFF)
 
 list(APPEND MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 

@@ -1,3 +1,5 @@
+include(../vendor/third_party/dependencies.cmake)
+
 # Define directory base path for FILE_SET
 set(CPPSERVER_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -13,6 +15,8 @@ target_link_libraries(${TARGET}
 PUBLIC
   Boost::filesystem
   Boost::json
+  spdlog::spdlog
+  fmt::fmt
 )
 
 set_target_properties(

@@ -8,3 +8,7 @@
 ## About namespace.digital open source software
 
 namespace.digital cpp server is a small, statically built HTTP & WebSocket server & client built on top of [boost](https://boost.org) and [Boost.Beast](https://www.boost.org/doc/libs/1_83_0/libs/beast/doc/html/index.html)
+
+# Guidlines
+
+https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md

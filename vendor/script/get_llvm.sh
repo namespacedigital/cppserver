@@ -23,6 +23,20 @@ pushd $OUTPUT_DIR
   popd
 popd
 
+#libcxx from llvm-project not from chromium
+# if [ ! -e $CACHE_DIR/clang+llvm-$LLVM_VERSION-aarch64-linux-gnu.tar.xz ]; then
+#   mkdir -p $CACHE_DIR
+#   pushd $CACHE_DIR
+#     curl -fLo clang+llvm-$LLVM_VERSION-aarch64-linux-gnu.tar.xz https://github.com/llvm/llvm-project/releases/download/llvmorg-$LLVM_VERSION/clang+llvm-$LLVM_VERSION-aarch64-linux-gnu.tar.xz
+#     tar xf clang+llvm-$LLVM_VERSION-aarch64-linux-gnu.tar.xz
+#     pushd clang+llvm-$LLVM_VERSION-aarch64-linux-gnu
+#       # ls
+#       # mkdir -p $OUTPUT_DIR/clang/bin && cp -r ./bin/* $OUTPUT_DIR/clang/bin
+#       mkdir -p $OUTPUT_DIR/libcxx/include && cp -r ./include/c++/v1/* $OUTPUT_DIR/libcxx/include
+#       cp -r ./include/aarch64-unknown-linux-gnu/c++/v1/__config_site $OUTPUT_DIR/libcxx/include
+#     popd
+#   popd
+# fi
 
 # libcxx
 pushd $OUTPUT_DIR
