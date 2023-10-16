@@ -6,5 +6,6 @@ target_sources(
             BASE_DIRS ${CPPSERVER_BASE_DIR}
             FILES
                 driver/ini.hpp
-                driver/ini.cpp
+    PRIVATE
+        driver/ini.cpp
 )

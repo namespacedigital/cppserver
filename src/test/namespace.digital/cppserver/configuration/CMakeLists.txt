@@ -1,9 +1,9 @@
-include(../CMakeHelper.cmake)
+include(../../../CMakeHelper.cmake)
 
 add_test_executable(
     TEST_NAME server
     SOURCES
-        server_test.cpp
+        driver/ini_test.cpp
     INCLUDES
         ../../vendor/third_party
     LIBRARIES
