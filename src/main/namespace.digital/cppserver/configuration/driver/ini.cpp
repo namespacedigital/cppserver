@@ -35,7 +35,7 @@ namespace namespacedigital {
         try {
           return pt.get<std::string>(configName);
         } catch (std::exception& e) {
-          iniLogger->error("getConfig(): {}", e.what());
+          SPDLOG_ERROR("getConfig(): {}", e.what());
         }
         return "";
       }
@@ -75,7 +75,7 @@ namespace namespacedigital {
           std::string host = pt.get<std::string>("server.host");
           this->serverHost = host;
         } catch (std::exception& e) {
-          iniLogger->error("setServerHost(): {}", e.what());
+          SPDLOG_ERROR("setServerHost(): {}", e.what());
         }
       }
 
@@ -83,7 +83,7 @@ namespace namespacedigital {
         try {
           this->serverPort = stoi(pt.get<std::string>("server.port"));
         } catch (std::exception& e) {
-          iniLogger->error("setServerPort(): {}", e.what());
+          SPDLOG_ERROR("setServerPort(): {}", e.what());
         }
       }
 
@@ -91,7 +91,7 @@ namespace namespacedigital {
         try {
           this->threadsNumber = stoi(pt.get<std::string>("server.threads_number"));
         } catch (std::exception& e) {
-          iniLogger->error("setThreadsNumber(): {}", e.what());
+          SPDLOG_ERROR("setThreadsNumber(): {}", e.what());
         }
       }
 
@@ -99,7 +99,7 @@ namespace namespacedigital {
         try {
           this->workersNumber = stoi(pt.get<std::string>("server.workers_number"));
         } catch (std::exception& e) {
-          iniLogger->error("setWorkersNumber(): {}", e.what());
+          SPDLOG_ERROR("setWorkersNumber(): {}", e.what());
         }
       }
 
@@ -107,7 +107,7 @@ namespace namespacedigital {
         try {
           this->poolType = pt.get<std::string>("server.pool_type");
         } catch (std::exception& e) {
-          iniLogger->error("setPoolType(): {}", e.what());
+          SPDLOG_ERROR("setPoolType(): {}", e.what());
         }
       }
 
@@ -115,7 +115,7 @@ namespace namespacedigital {
         try {
           this->docRoot = pt.get<std::string>("server.doc_root");
         } catch (std::exception& e) {
-          iniLogger->error("setDocRoot(): {}", e.what());
+          SPDLOG_ERROR("setDocRoot(): {}", e.what());
         }
       }
     }

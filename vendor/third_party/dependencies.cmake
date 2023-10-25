@@ -1,5 +1,15 @@
 include(FetchContent)
 
+# execute_process(
+#     COMMAND ping www.google.com -n 2 -w 1000
+#     RESULT_VARIABLE NO_CONNECTION
+# )
+# if(NO_CONNECTION GREATER 0)
+#     set(FETCHCONTENT_FULLY_DISCONNECTED ON)
+# else()
+#     set(FETCHCONTENT_FULLY_DISCONNECTED OFF)
+# endif()
+
 #fmt
 FetchContent_Declare(
     fmt 

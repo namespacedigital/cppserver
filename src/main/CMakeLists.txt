@@ -6,6 +6,7 @@ set(TARGET "namespace.digital-cppserver")
 
 # Create library
 add_library(${TARGET} STATIC)
+add_library(namespace.digital::cppserver ALIAS namespace.digital-cppserver)
 
 find_package(Boost REQUIRED COMPONENTS filesystem json)
 

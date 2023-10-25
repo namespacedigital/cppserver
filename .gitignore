@@ -8,4 +8,7 @@ vendor/build/raspberry-pi-os_armv7/_build/
 vendor/build/raspberry-pi-os_armv7/_install/
 vendor/build/raspberry-pi-os_armv7/_source/
 
+example/certificates/out/
+etc/
+
 .DS_Store

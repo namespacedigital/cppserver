@@ -43,7 +43,6 @@ namespace namespacedigital {
         std::string getPoolType();
       private:
         boost::property_tree::ptree pt;
-        std::shared_ptr<spdlog::logger> iniLogger = spdlog::default_logger();
         std::string fileName;
         std::string serverHost;
         size_t serverPort;
