@@ -2,6 +2,7 @@
 # add components
 add_subdirectory(configuration)
 add_subdirectory(router)
+add_subdirectory(util)
 
 # add server class
 target_sources(

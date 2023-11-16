@@ -1,5 +1,5 @@
 # Set a target name
-set(TARGET testlib)
+set(TARGET basic_server)
 
 # Create the executable
 add_executable(${TARGET})

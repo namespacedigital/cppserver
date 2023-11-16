@@ -5,10 +5,17 @@ target_sources(
 			HEADERS
 			BASE_DIRS ${CPPSERVER_BASE_DIR}
 			FILES
+				attribute.hpp
+				attributes.hpp
 				router.hpp
-			
-
-	PRIVATE
-		router_config.cpp
-		router.cpp
+				route.hpp
+				request.hpp
+				response.hpp
+				http_worker.hpp
+		PRIVATE
+			attribute.cpp
+			attributes.cpp
+			router.cpp
+			route.cpp
+			http_worker.cpp
 )
