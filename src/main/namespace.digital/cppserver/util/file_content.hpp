@@ -12,7 +12,6 @@ namespace namespacedigital {
 
             namespace fs = std::filesystem;
 
-
             enum FileType {
                 REGULAR_FILE,
                 DIRECTORY,
