@@ -7,6 +7,13 @@
 #include <namespace.digital/cppserver/router/ws_worker.hpp>
 #include <boost/json/src.hpp>
 
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/resource.h>
+#include <chrono>
+#include <thread>
+
+
 using namespace boost::json;
 using namespace namespacedigital::cppserver::router;
 namespace beast = boost::beast;         // from <boost/beast.hpp>
@@ -20,7 +27,32 @@ using Rooms = std::unordered_map<std::string /* ROOM */, Sessions>;
 
 Rooms rooms;
 
+
+inline std::string exec(std::string command) {
+    char buffer[128];
+    std::string result = "";
+
+    // Open pipe to file
+    FILE* pipe = popen(command.c_str(), "r");
+    if (!pipe) {
+        return "popen failed!";
+    }
+
+    // read till end of process:
+    while (!feof(pipe)) {
+
+        // use buffer to read and add to result
+        if (fgets(buffer, 128, pipe) != NULL)
+            result += buffer;
+    }
+
+    pclose(pipe);
+    return result;
+}
+
 int main(int argc, char* argv[]) {
+
+
 
     if (argc != 2) {
         SPDLOG_ERROR("Usage: streamplatform <config_file> absolute path\n");
@@ -66,7 +98,37 @@ int main(int argc, char* argv[]) {
 
     server.ws("/chat/:room", std::move(handler));
 
+    boost::asio::thread_pool tp(8);
 
-    server.listen(8090, "0.0.0.0");
+    server.broadcast([&]() {
+        std::cout << "Starting broadcasting server service: " << std::endl;
+
+
+        boost::asio::post(tp, [] {
+            while (1) {
+
+                std::cout << "Broadcasting to all" << std::endl;
+                for (auto& [roomName, sessions] : rooms) {
+                    std::cout << roomName << std::endl;
+                    for (auto& [uuid, session] : sessions) {
+                        std::cout << "Room: " << uuid << std::endl;
+                        if (auto s = session.lock(); s) {
+                            s->send(std::string(exec("top -l 1 -n 0")));
+
+                        }
+
+                    }
+
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+            }});
+
+
+
+
+
+
+        }).listen(8090, "0.0.0.0");
 
 }

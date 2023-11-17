@@ -41,6 +41,8 @@ namespace namespacedigital {
         // Websocket
         ServerRoute& ws(router::WsHandler&& handler) { _server.ws(_path, std::move(handler)); return *this; }
 
+        ServerRoute& broadcast(std::function<void()> callbackFunction) { return *this; }
+
       private:
         Server& _server;
         std::string _path;
@@ -64,6 +66,7 @@ namespace namespacedigital {
       Server& options(const std::string& path, route_cb&& cb);
       Server& del(const std::string& path, route_cb&& cb);
       Server& ws(const std::string& path, router::WsHandler&& handler);
+      Server& broadcast(std::function<void()> callbackFunction);
 
       void listen(unsigned short port = 8080, const std::string& address = "0.0.0.0");
       void stop();

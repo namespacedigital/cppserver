@@ -104,3 +104,9 @@ Server& Server::ws(const std::string& path, WsHandler&& handler) {
   return *this;
 }
 
+Server& Server::broadcast(std::function<void()> callbackFunction) {
+  // Router::getInstance()->add_route(beast::http::verb::get, Route(path, std::move(handler)));
+  callbackFunction();
+  return *this;
+}
+
