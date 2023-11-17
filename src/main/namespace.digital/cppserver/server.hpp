@@ -7,6 +7,7 @@
 #include <vector>
 #include <list>
 #include "./router/router.hpp"
+#include "./router/ws_handler.hpp"
 #include "./configuration/driver/ini.hpp"
 
 namespace namespacedigital {
@@ -37,6 +38,9 @@ namespace namespacedigital {
 
         ServerRoute& del(route_cb&& cb) { _server.del(_path, std::move(cb)); return *this; };
 
+        // Websocket
+        ServerRoute& ws(router::WsHandler&& handler) { _server.ws(_path, std::move(handler)); return *this; }
+
       private:
         Server& _server;
         std::string _path;
@@ -59,6 +63,7 @@ namespace namespacedigital {
       Server& post(const std::string& path, route_cb&& cb);
       Server& options(const std::string& path, route_cb&& cb);
       Server& del(const std::string& path, route_cb&& cb);
+      Server& ws(const std::string& path, router::WsHandler&& handler);
 
       void listen(unsigned short port = 8080, const std::string& address = "0.0.0.0");
       void stop();

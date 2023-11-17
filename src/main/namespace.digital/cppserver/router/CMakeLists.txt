@@ -12,6 +12,9 @@ target_sources(
 				request.hpp
 				response.hpp
 				http_worker.hpp
+				ws_worker.hpp
+				ws_handler.hpp
+				ws_context.hpp
 		PRIVATE
 			attribute.cpp
 			attributes.cpp

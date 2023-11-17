@@ -11,6 +11,7 @@
 #include "../util/file_content.hpp"
 #include "../util/string_util.hpp"
 #include "../configuration/driver/ini.hpp"
+#include "ws_worker.hpp"
 
 namespace beast = boost::beast;         // from <boost/beast.hpp>
 namespace http = beast::http;           // from <boost/beast/http.hpp>
@@ -124,17 +125,24 @@ void HttpWorker::read_request() {
                     }
                     // auto found_method = router->find(_request.method());
                     auto res = std::make_shared<Response>(beast::http::status::ok, _request.version());
+                    bool isWebsocket = (beast::websocket::is_upgrade(_request));
 
                     res->set_http_worker(std::move(this));
                     for (auto&& route : found_method->second) {
                         if (route.match(_request)) {
                             try {
-                                route.execute(_request, *res);
-                                //if response is populated inside route callback then send it
-                                if (res->body().size() > 0) {
-                                    send_response(res.get());
+                                if (isWebsocket) {
+                                    // Create a websocket session, and transferring ownership
+                                    std::make_shared<WsWorker>(std::move(socket_), route)->run(_request);
+                                    return;
+                                } else {
+                                    route.execute(_request, *res);
+                                    //if response is populated inside route callback then send it
+                                    if (res->body().size() > 0) {
+                                        send_response(res.get());
+                                    }
+                                    return;
                                 }
-                                return;
                             } catch (const std::exception& ex) {
                                 std::cout << "Handler : " << ex.what() << std::endl;
                                 throw std::runtime_error(ex.what());

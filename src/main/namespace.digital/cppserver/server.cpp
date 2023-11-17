@@ -5,6 +5,7 @@
 using namespacedigital::cppserver::Server;
 using configuration = namespacedigital::cppserver::configuration::Ini;
 using namespacedigital::cppserver::router::Router;
+using namespacedigital::cppserver::router::WsHandler;
 using namespacedigital::cppserver::router::route_cb;
 using namespacedigital::cppserver::router::Route;
 using namespacedigital::cppserver::router::HttpWorker;
@@ -95,6 +96,11 @@ Server& Server::options(const std::string& path, route_cb&& cb) {
 
 Server& Server::del(const std::string& path, route_cb&& cb) {
   Router::getInstance()->add_route(beast::http::verb::delete_, Route(path, std::move(cb)));
+  return *this;
+}
+
+Server& Server::ws(const std::string& path, WsHandler&& handler) {
+  Router::getInstance()->add_route(beast::http::verb::get, Route(path, std::move(handler)));
   return *this;
 }
 

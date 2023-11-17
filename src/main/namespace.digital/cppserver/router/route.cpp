@@ -35,6 +35,11 @@ Route::Route(const std::string& path, route_cb&& cb) :
 
 }
 
+Route::Route(const std::string& path, WsHandler&& handler) :
+  Route(path) {
+  _ws_handler = std::move(handler);
+}
+
 // --------------------------------------------------------------------------
 bool Route::match(Request& req) const noexcept {
 
