@@ -1,0 +1,24 @@
+target_sources(
+    ${TARGET}
+    PUBLIC
+		FILE_SET
+			HEADERS
+			BASE_DIRS ${CPPSERVER_BASE_DIR}
+			FILES
+				attribute.hpp
+				attributes.hpp
+				router.hpp
+				route.hpp
+				request.hpp
+				response.hpp
+				http_worker.hpp
+				ws_worker.hpp
+				ws_handler.hpp
+				ws_context.hpp
+		PRIVATE
+			attribute.cpp
+			attributes.cpp
+			router.cpp
+			route.cpp
+			http_worker.cpp
+)

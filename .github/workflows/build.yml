@@ -1,0 +1,164 @@
+name: build-workflow
+
+on:
+  push:
+    paths-ignore:
+      - 'doc/**'
+      - 'html/**'
+      - '**.md'
+      - 'THANKS'
+      - 'LICENSE'
+      - 'NOTICE'
+
+jobs:
+  build-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - arm64
+    name: Build namespace.digital cppserver for macOS_${{ matrix.arch }}
+    runs-on: macos-11.0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Versions
+        run: |
+          source VERSION
+          echo "boost_version=${BOOST_VERSION}" >> $GITHUB_OUTPUT
+        id: versions
+      - name: Cache Boost ${{ steps.versions.outputs.boost_version }}
+        id: cache-boost
+        uses: actions/cache@v3
+        with:
+          path: _cache/boost
+          key: macos-boost-${{ steps.versions.outputs.boost_version }}.tar.gz.v3
+      - run: ./build.sh --package macos_${{ matrix.arch }}
+        working-directory: build
+        timeout-minutes: 120
+      - name: Output package name
+        shell: bash
+        run: |
+          source VERSION
+          MACOS_VERSION=`sw_vers -productVersion | cut -d '.' -f-2`
+          echo "PACKAGE_NAME=cppserver-${CPPSERVER_VERSION}_macos-${MACOS_VERSION}_${{ matrix.arch }}.tar.gz" >> macos_${{ matrix.arch }}.env
+          echo "CONTENT_TYPE=application/gzip" >> macos_${{ matrix.arch }}.env
+          echo "name=cppserver-${CPPSERVER_VERSION}_macos-${MACOS_VERSION}_${{ matrix.arch }}.tar.gz" >> $GITHUB_OUTPUT
+        id: package_name
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.package_name.outputs.name }}
+          path: _package/${{ steps.package_name.outputs.name }}
+      - name: Upload Environment
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos_${{ matrix.arch }}.env
+          path: macos_${{ matrix.arch }}.env
+  build-linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        name:
+          - raspberry-pi-os_armv6
+          - raspberry-pi-os_armv7
+          - raspberry-pi-os_armv8
+          - ubuntu-20.04_x86_64
+          - ubuntu-20.04_armv8_jetson_xavier
+          - ubuntu-22.04_x86_64
+    name: Build namespace.digital cppserver for ${{ matrix.name }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Versions
+        run: |
+          source VERSION
+          echo "boost_version=${BOOST_VERSION}" >> $GITHUB_OUTPUT
+        id: versions
+      - name: Cache Boost ${{ steps.versions.outputs.boost_version }}
+        id: cache-boost
+        uses: actions/cache@v3
+        with:
+          path: _cache/boost
+          key: ${{ matrix.name }}-boost-${{ steps.versions.outputs.boost_version }}.tar.gz.v3
+      - run: ./build.sh --no-tty --no-mount --package ${{ matrix.name }}
+        working-directory: build
+        timeout-minutes: 120
+      - name: Output package name
+        shell: bash
+        run: |
+          source VERSION
+          echo "PACKAGE_NAME=cppserver-${CPPSERVER_VERSION}_${{ matrix.name }}.tar.gz" >> ${{ matrix.name }}.env
+          echo "CONTENT_TYPE=application/gzip" >> ${{ matrix.name }}.env
+          echo "name=cppserver-${CPPSERVER_VERSION}_${{ matrix.name }}.tar.gz" >> $GITHUB_OUTPUT
+        id: package_name
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.package_name.outputs.name }}
+          path: _package/${{ steps.package_name.outputs.name }}
+      - name: Upload Environment
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.name }}.env
+          path: ${{ matrix.name }}.env
+  create-release:
+    name: Create Release
+    if: contains(github.ref, 'tags/202')
+    needs:
+      - build-macos
+      - build-linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/download
+        with:
+          platform: macos_arm64
+      - uses: ./.github/actions/download
+        with:
+          platform: raspberry-pi-os_armv6
+      - uses: ./.github/actions/download
+        with:
+          platform: raspberry-pi-os_armv7
+      - uses: ./.github/actions/download
+        with:
+          platform: raspberry-pi-os_armv8
+      - uses: ./.github/actions/download
+        with:
+          platform: ubuntu-20.04_x86_64
+      - uses: ./.github/actions/download
+        with:
+          platform: ubuntu-20.04_armv8_jetson_xavier
+      - uses: ./.github/actions/download
+        with:
+          platform: ubuntu-22.04_x86_64
+      - name: Env to output
+        run: |
+          echo "package_paths<<EOF" >> $GITHUB_OUTPUT
+          cat package_paths.env >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        id: env
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ steps.env.outputs.package_paths }}
+  notification:
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    needs:
+      - build-macos
+      - build-linux
+      - create-release
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rtCamp/action-slack-notify@v2
+        if: |
+          needs.build-macos.result == 'failure' ||
+          needs.build-linux.result == 'failure' ||
+          needs.create-release.result == 'failure' ||
+          needs.upload-assets.result == 'failure'
+        env:
+          SLACK_CHANNEL: namespace.digital-cppserver
+          SLACK_COLOR: danger
+          SLACK_TITLE: Failure build
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

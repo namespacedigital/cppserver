@@ -1,0 +1,16 @@
+https://github.com/boostorg/beast/issues/2362
+
+https://github.com/boostorg/beast/issues/1077
+
+Long-running, synchronous program operations should not be executed an io_context associated with active connections, otherwise they will block incoming network data from being processed and outgoing network data from being sent. Instead, delegate this work to your own thread pool. boost::asio::thread_pool is one solution, or you can also write your own if you want to have things like work priorities or more control over how work is ordered. You should not need to mess with executors. You can also use a separate instance of io_context as a make-shift thread pool. That decision will depend on the specifics of your use-case.
+
+When the long-running operation is completed, use boost::asio::post to queue a call to a function which calls an asynchronous initiating function to deliver the result to the connection. Make sure to use the io_context associated with the connection and also a strand (implicit, or explicit).
+
+
+
+here with broadcast message https://github.com/boostorg/beast/issues/1087 to all clients
+
+https://www.appsloveworld.com/cplus/100/123/boost-asio-send-message-to-all-connected-clients?expand_article=1
+
+
+https://stackoverflow.com/questions/49394277/boost-asio-send-message-to-all-connected-clients
