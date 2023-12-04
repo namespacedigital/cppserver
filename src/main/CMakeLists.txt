@@ -62,9 +62,6 @@ write_basic_package_version_file(
 
 configure_file(cppserver-config.cmake.in cppserver-config.cmake @ONLY)
 
-# install(FILES "cppserver-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/cppserver-config-version.cmake"
-# DESTINATION lib/cmake/cppserver)
-
 install(
     FILES
         ${CMAKE_CURRENT_BINARY_DIR}/cppserver-config.cmake
@@ -77,30 +74,14 @@ set(SPDLOG_INSTALL ON)
 install(TARGETS ${TARGET} 
         EXPORT cppserver-targets
         FILE_SET HEADERS
-        LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/lib
-        LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/lib
-        LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
         )
-
-
-
-# install(EXPORT cppserverTargets
-#         FILE cppserverTargets.cmake
-#         NAMESPACE namespace.digital::
-#         DESTINATION lib/cmake/cppserver)
-
-
-        install(
-          EXPORT cppserver-targets
-          FILE cppserver-targets.cmake
-          NAMESPACE namespace.digital::
-          DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
-      )
-
-
-# install(
-#     EXPORT cppserver-targets
-#     FILE cppserver-targets.cmake
-#     NAMESPACE namespace.digital::
-#     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
-# )
+install(
+    EXPORT cppserver-targets
+    FILE cppserver-targets.cmake
+    NAMESPACE namespace.digital::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
+)

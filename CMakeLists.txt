@@ -12,12 +12,11 @@ option(CPPSERVER_FEATURE_TLS    "Whether to enable TLS features"  OFF)
 option(CPPSERVER_DEPENDENCY_SPDLOG_DOWNLOAD "Whether to automatically fetch spdlog" ON)
 option(CPPSERVER_DEPENDENCY_FMT_DOWNLOAD "Whether to automatically fetch fmt" ON)
 
-# Settings
-set(CPPSERVER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bin) 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
 
 # Parse and set parameters settings
 set(CPPSERVER_PACKAGE_NAME "" CACHE STRING "Package name to automate build settings")
+set(CPPSERVER_INSTALL_DIR "" CACHE STRING "Where to install the headers and libraries")
 set(TARGET_OS "" CACHE STRING "Operating OS to build for: windows, macos, linux")
 set(TARGET_OS_LINUX "" CACHE STRING "TARGET_OS linux")
 set(TARGET_ARCH "" CACHE STRING "A working CPU to build for: x86_64, arm")
@@ -28,6 +27,10 @@ set(USE_LIBCXX OFF CACHE BOOL "Whether to use libc++ instead of libstdc++")
 set(LIBCXX_INCLUDE_DIR "" CACHE PATH "libc++ include directory when using libc++ .If it is an empty string, use libc++ in the default search path")
 set(SYSROOT "" CACHE PATH "RootFS directory for cross-builds when TARGET_ARCH is arm")
 set(SPDLOG_INSTALL ON)
+
+
+# Settings
+set(CPPSERVER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bin) 
 
 # Set dependencies accordingly
 set(CPPSERVER_DEPENDENCY_OPENSSL OFF)

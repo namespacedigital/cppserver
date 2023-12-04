@@ -108,15 +108,19 @@ case "$PACKAGE" in
       BUILD_TYPE=Release
     fi
 
+    INSTALL_DIR=../../out
+
     mkdir -p ../../_build/$PACKAGE
     pushd ../../_build/$PACKAGE
-      cmake -G Xcode\
+      cmake \
         -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
         -DCPPSERVER_PACKAGE_NAME="$PACKAGE" \
         -DCPPSERVER_VERSION="$CPPSERVER_VERSION" \
         -DCPPSERVER_COMMIT="$CPPSERVER_COMMIT" \
+        -DCPPSERVER_INSTALL_DIR="$INSTALL_DIR" \
         ../..
       cmake --build . -j$JOBS
+      cmake --install . --prefix ../../out
     popd
 
     if [ $FLAG_PACKAGE -eq 1 ]; then
