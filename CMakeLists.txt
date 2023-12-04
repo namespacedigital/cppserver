@@ -27,6 +27,7 @@ set(CLANG_ROOT "" CACHE PATH "Location of the clang compiler used for compilatio
 set(USE_LIBCXX OFF CACHE BOOL "Whether to use libc++ instead of libstdc++")
 set(LIBCXX_INCLUDE_DIR "" CACHE PATH "libc++ include directory when using libc++ .If it is an empty string, use libc++ in the default search path")
 set(SYSROOT "" CACHE PATH "RootFS directory for cross-builds when TARGET_ARCH is arm")
+set(SPDLOG_INSTALL ON)
 
 # Set dependencies accordingly
 set(CPPSERVER_DEPENDENCY_OPENSSL OFF)
