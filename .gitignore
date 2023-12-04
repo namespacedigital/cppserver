@@ -8,6 +8,7 @@ vendor/build/raspberry-pi-os_armv7/_build/
 vendor/build/raspberry-pi-os_armv7/_install/
 vendor/build/raspberry-pi-os_armv7/_source/
 vendor/build/raspberry-pi-os_armv8/script/
+lib/
 
 example/certificates/out/
 etc/
