@@ -12,3 +12,7 @@ namespace.digital cpp server is a small, statically built HTTP & WebSocket serve
 # Guidlines
 
 https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md
+
+# usefull info
+
+https://iamsorush.com/posts/cpp-cmake-config/

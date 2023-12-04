@@ -12,5 +12,6 @@ lib/
 
 example/certificates/out/
 etc/
+out/
 
 .DS_Store

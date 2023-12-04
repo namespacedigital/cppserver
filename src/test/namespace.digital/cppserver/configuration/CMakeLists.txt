@@ -7,5 +7,5 @@ add_test_executable(
     INCLUDES
         ../../vendor/third_party
     LIBRARIES
-        namespace.digital-cppserver
+        cppserver
 )

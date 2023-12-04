@@ -2,11 +2,10 @@
 set(CPPSERVER_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Define target name
-set(TARGET "namespace.digital-cppserver")
+set(TARGET "cppserver")
 
 # Create library
 add_library(${TARGET} STATIC)
-add_library(namespace.digital::cppserver ALIAS namespace.digital-cppserver)
 
 find_package(Boost REQUIRED COMPONENTS filesystem json)
 
@@ -62,8 +61,17 @@ write_basic_package_version_file(
 
 configure_file(cppserver-config.cmake.in cppserver-config.cmake @ONLY)
 
-# install(FILES "cppserver-config.cmake" "${CMAKE_CURRENT_BINARY_DIR}/cppserver-config-version.cmake"
-# DESTINATION lib/cmake/cppserver)
+configure_file(
+    cppserver.pc.in
+    cppserver.pc
+    @ONLY
+)
+
+install(
+    FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/cppserver.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+)
 
 install(
     FILES
@@ -77,30 +85,14 @@ set(SPDLOG_INSTALL ON)
 install(TARGETS ${TARGET} 
         EXPORT cppserver-targets
         FILE_SET HEADERS
-        LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/lib
-        LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/lib
-        LIBRARY DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
         )
-
-
-
-# install(EXPORT cppserverTargets
-#         FILE cppserverTargets.cmake
-#         NAMESPACE namespace.digital::
-#         DESTINATION lib/cmake/cppserver)
-
-
-        install(
-          EXPORT cppserver-targets
-          FILE cppserver-targets.cmake
-          NAMESPACE namespace.digital::
-          DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
-      )
-
-
-# install(
-#     EXPORT cppserver-targets
-#     FILE cppserver-targets.cmake
-#     NAMESPACE namespace.digital::
-#     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
-# )
+install(
+    EXPORT cppserver-targets
+    FILE cppserver-targets.cmake
+    NAMESPACE namespace.digital::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
+)
