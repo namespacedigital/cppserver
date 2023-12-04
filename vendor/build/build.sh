@@ -108,7 +108,7 @@ case "$PACKAGE" in
       BUILD_TYPE=Release
     fi
 
-    INSTALL_DIR=../../out
+    INSTALL_DIR="$PWD/out"
 
     mkdir -p ../../_build/$PACKAGE
     pushd ../../_build/$PACKAGE

@@ -2,11 +2,10 @@
 set(CPPSERVER_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Define target name
-set(TARGET "namespace.digital-cppserver")
+set(TARGET "cppserver")
 
 # Create library
 add_library(${TARGET} STATIC)
-add_library(namespace.digital::cppserver ALIAS namespace.digital-cppserver)
 
 find_package(Boost REQUIRED COMPONENTS filesystem json)
 
@@ -61,6 +60,18 @@ write_basic_package_version_file(
 )
 
 configure_file(cppserver-config.cmake.in cppserver-config.cmake @ONLY)
+
+configure_file(
+    cppserver.pc.in
+    cppserver.pc
+    @ONLY
+)
+
+install(
+    FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/cppserver.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+)
 
 install(
     FILES
