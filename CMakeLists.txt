@@ -14,6 +14,7 @@ option(CPPSERVER_DEPENDENCY_FMT_DOWNLOAD "Whether to automatically fetch fmt" ON
 
 # Settings
 set(CPPSERVER_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/bin) 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 # Parse and set parameters settings
 set(CPPSERVER_PACKAGE_NAME "" CACHE STRING "Package name to automate build settings")
