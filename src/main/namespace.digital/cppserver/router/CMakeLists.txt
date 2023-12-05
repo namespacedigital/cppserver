@@ -10,6 +10,7 @@ target_sources(
 				router.hpp
 				route.hpp
 				request.hpp
+				header.hpp
 				response.hpp
 				http_worker.hpp
 				ws_worker.hpp
