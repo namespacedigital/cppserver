@@ -1,4 +1,18 @@
 include(CMakeFindDependencyMacro)
+set(cppserver_FOUND 1)
+set(_INSTALL_DIR deps/cppserver/vendor/build/macos_arm64/_install)
+set(BOOST_ROOT_DIR ${_INSTALL_DIR}/boost)
+set(CPPSERVER_ROOT_DIR deps/cppserver/out) #change to ffmpeg if not static deps
+
+if (NOT "${CPPSERVER_ROOT_DIR}" STREQUAL "")
+  list(APPEND CMAKE_PREFIX_PATH ${CPPSERVER_ROOT_DIR})
+endif()
+
+if (NOT "${BOOST_ROOT_DIR}" STREQUAL "")
+  list(APPEND CMAKE_PREFIX_PATH ${BOOST_ROOT_DIR})
+endif()
+
+find_package(Boost REQUIRED COMPONENTS filesystem json)
 
 # Include dependencies
 find_dependency(fmt REQUIRED)
