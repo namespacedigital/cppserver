@@ -80,7 +80,6 @@ install(
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
 )
 
-set(SPDLOG_INSTALL ON)
 
 install(TARGETS ${TARGET} 
         EXPORT cppserver-targets
