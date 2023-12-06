@@ -1,8 +1,36 @@
+
 # Define directory base path for FILE_SET
 set(CPPSERVER_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Define target name
 set(TARGET "cppserver")
+
+# Define directory base path for Boost
+set(BOOST_ROOT_DIR "" CACHE PATH "Boost installation directory\nIf it is an empty string, use the default search path of Boost")
+
+# Build for different platforms boost can be 
+if(CPPSERVER_PACKAGE_NAME STREQUAL "macos_arm64")
+  set(BOOST_ROOT_DIR ${_INSTALL_DIR}/boost)
+elseif(CPPSERVER_PACKAGE_NAME STREQUAL "raspberry-pi-os_armv7")
+  set(BOOST_ROOT_DIR /root/boost)
+  set(Boost_ARCHITECTURE 32)
+elseif(CPPSERVER_PACKAGE_NAME STREQUAL "raspberry-pi-os_armv8")
+  set(BOOST_ROOT_DIR /root/boost)
+else()
+endif()
+
+
+if (NOT "${BOOST_ROOT_DIR}" STREQUAL "")
+  list(APPEND CMAKE_PREFIX_PATH ${BOOST_ROOT_DIR})
+endif()
+
+
+set(Boost_USE_STATIC_LIBS ON)
+if ("${TARGET_OS}" STREQUAL "windows")
+  set(Boost_USE_STATIC_RUNTIME ON)
+else()
+  set(Boost_USE_STATIC_RUNTIME OFF)
+endif()
 
 # Create library
 add_library(${TARGET} STATIC)
@@ -44,14 +72,11 @@ endif()
 
 add_subdirectory(namespace.digital)
 
-
-
 ########################################################################################################################
 # Install                                                                                                              #
 ########################################################################################################################
 
 include(CMakePackageConfigHelpers)
-
 
 write_basic_package_version_file(
     cppserver-config-version.cmake
@@ -80,7 +105,6 @@ install(
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
 )
 
-
 install(TARGETS ${TARGET} 
         EXPORT cppserver-targets
         FILE_SET HEADERS
@@ -95,3 +119,4 @@ install(
     NAMESPACE namespace.digital::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cppserver
 )
+

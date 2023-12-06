@@ -1,4 +1,4 @@
-include(../vendor/third_party/dependencies.cmake)
+include(../deps/cmake/dependencies.cmake)
 
 # Cppserver lib
 add_subdirectory(main)
