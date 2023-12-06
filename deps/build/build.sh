@@ -183,9 +183,9 @@ case "$PACKAGE" in
 
     rm -rf $PACKAGE/_cache/boost/
 
-    # キャッシュしたデータを取り出す
+    # Retrieve cached
     set +e
-    docker $DOCKER_PLATFORM container create -it --name cppserver-$PACKAGE cppserver/$PACKAGE:m$WEBRTC_BUILD_VERSION
+    docker container create $DOCKER_PLATFORM -it --name cppserver-$PACKAGE cppserver/$PACKAGE:m$WEBRTC_BUILD_VERSION
     docker container start cppserver-$PACKAGE
     mkdir -p ../_cache/boost/
     docker container cp cppserver-$PACKAGE:/root/_cache/boost/. ../_cache/boost/
