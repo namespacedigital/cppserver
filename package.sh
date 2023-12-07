@@ -1,8 +1,8 @@
  #!/bin/bash
 
 #  BUILD
-# /bin/bash ./deps/build/build.sh macos_arm64
-/bin/bash ./deps/build/build.sh raspberry-pi-os_armv8
+/bin/bash ./deps/build/build.sh macos_arm64
+# /bin/bash ./deps/build/build.sh raspberry-pi-os_armv8
 
 # TESTS
 # /Users/ovidiu.dragoi/my/cppserver/_build/macos_arm64/t/Debug/ini.t 

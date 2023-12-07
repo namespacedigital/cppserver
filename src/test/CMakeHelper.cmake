@@ -14,7 +14,7 @@ function(add_test_executable)
     add_dependencies(test ${TARGET_NAME})
 
     if (ARG_INCLUDES)
-      execute_process (COMMAND bash -c "cd ../../vendor/third_party && pwd" OUTPUT_VARIABLE pwd)
+      execute_process (COMMAND bash -c "cd ../../deps/third_party && pwd" OUTPUT_VARIABLE pwd)
       execute_process (COMMAND bash -c "ls" OUTPUT_VARIABLE ls)
       message(STATUS "where I am      : " ${pwd})
    
