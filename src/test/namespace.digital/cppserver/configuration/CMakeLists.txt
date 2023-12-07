@@ -5,7 +5,7 @@ add_test_executable(
     SOURCES
         driver/ini_test.cpp
     INCLUDES
-        ../../vendor/third_party
+        ../../deps/third_party
     LIBRARIES
         cppserver
 )
