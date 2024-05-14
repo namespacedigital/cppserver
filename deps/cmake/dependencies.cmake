@@ -1,5 +1,7 @@
 include(FetchContent)
 
+Set(FETCHCONTENT_QUIET FALSE)
+
 #fmt
 FetchContent_Declare(
     fmt 
