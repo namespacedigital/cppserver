@@ -98,6 +98,10 @@
     "algorithm": "cpp",
     "*.ipp": "cpp",
     "__std_stream": "cpp",
-    "filesystem": "cpp"
+    "filesystem": "cpp",
+    "__verbose_abort": "cpp",
+    "shared_mutex": "cpp",
+    "source_location": "cpp",
+    "thread": "cpp"
   }
 }

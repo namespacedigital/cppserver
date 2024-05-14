@@ -1,5 +1,6 @@
 #include "server.hpp"
 #include "./configuration/driver/ini.hpp"
+#include "./router/listener.hpp"
 
 
 using namespacedigital::cppserver::Server;
@@ -8,7 +9,7 @@ using namespacedigital::cppserver::router::Router;
 using namespacedigital::cppserver::router::WsHandler;
 using namespacedigital::cppserver::router::route_cb;
 using namespacedigital::cppserver::router::Route;
-using namespacedigital::cppserver::router::HttpWorker;
+using namespacedigital::cppserver::router::Listener;
 
 
 Server::Server() {
@@ -46,14 +47,12 @@ void Server::listen(unsigned short port, const std::string& address) {
   net::io_context ioc{ (int)threads_count };
 
   const auto ipAddress = net::ip::make_address(serverHost);
-  tcp::acceptor acceptor{ ioc, {ipAddress, serverPort} };
+  auto const doc_root = std::make_shared<std::string>(_doc_root);
 
-  // keep the worker active (feed the dog) instead of work guard for threads
-  std::make_shared<HttpWorker>(acceptor, _doc_root, ioc)->start();
-  for (int i = 0; i < _worker_pool; ++i) {
-    std::make_shared<HttpWorker>(acceptor, _doc_root, ioc)->start();
-    // std::cout << "worker = " << i << std::endl;
-  }
+  std::make_shared<Listener>(
+    ioc,
+    tcp::endpoint{ ipAddress, serverPort },
+    doc_root)->run();
 
   std::vector<std::thread> v;
   v.reserve(threads_count - 1);

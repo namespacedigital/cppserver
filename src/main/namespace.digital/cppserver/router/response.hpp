@@ -24,6 +24,8 @@ namespace namespacedigital {
                     set(beast::http::field::content_type, ct.value);
                 }
 
+                // void setHttpWorker(HttpWorker* httpWorker);
+
                 void set_header(beast::http::field name, const std::string& value) {
                     set(name, value);
                 }
@@ -33,7 +35,7 @@ namespace namespacedigital {
 
                 void done() { _cb(); _cb = [] {}; }
 
-                void set_http_worker(HttpWorker* httpWorker) {
+                void set_http_worker(std::shared_ptr<HttpWorker> httpWorker) {
                     _http_worker = httpWorker;
                 }
                 void writeHeader() {
@@ -49,19 +51,57 @@ namespace namespacedigital {
                 }
 
                 void async_write(const char buffer[], const size_t length) {
+
+                    auto res = std::make_shared<beast::http::response<beast::http::buffer_body>>();
+
+                    //send fields
+                    res->result(this->result());
+                    res->keep_alive(this->keep_alive());
+
+                    //send headers
+                    for (auto const& field : *this) {
+                        res->set(field.name(), field.value());
+                    }
+
+                    std::cout << length << std::endl;
+                    res->body().data = (void*)buffer;
+                    res->body().size = length;
+
                     this->_http_worker->send_buffer_body_response_async(buffer, length);
+
+
                 }
 
                 void write(const char buffer[], const size_t length) {
+
+                    auto res = std::make_shared<beast::http::response<beast::http::buffer_body>>();
+
+                    //send fields
+                    res->result(this->result());
+                    res->keep_alive(this->keep_alive());
+
+                    //send headers
+                    for (auto const& field : *this) {
+                        res->set(field.name(), field.value());
+                    }
+
+                    std::cout << length << std::endl;
+                    res->body().data = (void*)buffer;
+                    res->body().size = length;
+
                     this->_http_worker->send_buffer_body_response(buffer, length);
+
+
                 }
 
                 void sendFileBodyResponse(const fs::path& path) {
                     auto res = std::make_shared<beast::http::response<beast::http::file_body>>();
 
+                    ////start
                     http::file_body::value_type file;
                     beast::error_code ec;
 
+                    //open file
                     file.open(path.c_str(), beast::file_mode::read, ec);
 
                     if (ec) {
@@ -86,9 +126,11 @@ namespace namespacedigital {
                 void send(const fs::path& path, std::string& start, std::string& end) {
                     auto res = std::make_shared<beast::http::response<beast::http::file_body>>();
 
+                    //send fields
                     res->result(this->result());
                     res->keep_alive(this->keep_alive());
 
+                    //send headers
                     for (auto const& field : *this) {
                         res->set(field.name(), field.value());
                     }
@@ -103,12 +145,15 @@ namespace namespacedigital {
                 void send(const fs::path& path) {
                     auto res = std::make_shared<beast::http::response<beast::http::file_body>>();
 
+                    //send fields
                     res->result(this->result());
                     res->keep_alive(this->keep_alive());
 
+                    //send headers
                     for (auto const& field : *this) {
                         res->set(field.name(), field.value());
                     }
+                    // this->_http_worker->send_file(res.get(), path);
 
                 }
 
@@ -116,12 +161,13 @@ namespace namespacedigital {
                     _cb = std::move(cb);
                 }
 
+                // Result alias and a common helper for no error
                 http::status status() const { return result(); }
                 bool is_status_ok() const { return status() == http::status::ok; }
 
             private:
                 bool    _is_postponed = false;
-                HttpWorker* _http_worker;
+                std::shared_ptr<HttpWorker> _http_worker;
                 std::function<void()> _cb = []() {};
             };
 
