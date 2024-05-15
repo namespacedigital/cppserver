@@ -41,6 +41,7 @@ namespace namespacedigital {
                     return SYMLINK;
                 if (!fs::exists(status))
                     return NOT_FOUND;
+                return NOT_FOUND;
             }
 
 
@@ -55,15 +56,15 @@ namespace namespacedigital {
                                 <ul>)";
 
                 for (const auto& file : fs::directory_iterator(path)) {
-                    char fileLink[1000];
+                    std::string fileLink;
                     std::string fileName(file.path().filename());
                     std::string fullUrl = target + fileName;
                     std::string fileUrl = path.c_str() + fileName;
                     FileType fileType = file_type(fileUrl, fs::status(fileUrl));
                     if (fileType == FileType::REGULAR_FILE) {
-                        std::sprintf(fileLink, "<li><a href='%s'>%s</a></li>\n", fullUrl.data(), fileName.data());
+                        fileLink = fmt::format("<li><a href='{}'>{}</a></li>\n", fullUrl.data(), fileName.data());
                     } else {
-                        std::sprintf(fileLink, "<li><a href='%s/'>%s</a></li>\n", fullUrl.data(), fileName.data());
+                        fileLink = fmt::format("<li><a href='{}/'>{}</a></li>\n", fullUrl.data(), fileName.data());
                     }
                     htmlBody.append(fileLink);
                 }
